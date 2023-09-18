@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace AshbornClick
 {
@@ -42,23 +34,13 @@ namespace AshbornClick
 
     public static int y;
 
-    public static int count;
+    public static int xJump;
 
-    public static int timer;
-
-    public static int dedo = 0;
-
-    public static int random;
-
-    public static int status;
-
-    private Random Levi = new Random();
+    public static int yJump;
 
     public static Point newPoint;
 
     public static Point cursor;
-
-    private IntPtr value;
 
     private IntPtr hwnd;
 
@@ -66,10 +48,11 @@ namespace AshbornClick
 
     private RECT infoWindow;
 
-    private static Random num = new Random();
+    private IntPtr hwndJump;
 
-    [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto)]
-    public static extern void mouse_event(int dwflags, int dx, int dy, int cbuttons, int dwExtraInfo);
+    private POINT_API mouseJump;
+
+    private RECT infoWindowJump;
 
     [DllImport("user32.dll", CharSet = CharSet.Auto)]
     public static extern bool GetCursorPos(out Point lpPoint);
@@ -92,68 +75,84 @@ namespace AshbornClick
     [DllImport("user32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
     private static extern int GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
-    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int cch);
- 
         public AshbornClick()
         {
             InitializeComponent();
         }
 
-    private void GetWindow()
-    {
-        checked
+        private void GetWindow()
         {
-            if (Convert.ToDouble(Convert.ToString((int)GetForegroundWindow())) != 0.0)
+            checked
             {
-                GetCursorPos(out mouse);
-                hwnd = WindowFromPoint(mouse);
-                GetWindowRect(hwnd, out infoWindow);
-                xPos = mouse.X - infoWindow.Left;
-                yPos = mouse.Y - infoWindow.Top;
+                if (Convert.ToDouble(Convert.ToString((int)GetForegroundWindow())) != 0.0)
+                {
+                    GetCursorPos(out mouse);
+                    hwnd = WindowFromPoint(mouse);
+                    GetWindowRect(hwnd, out infoWindow);
+                    xPos = mouse.X - infoWindow.Left;
+                    yPos = mouse.Y - infoWindow.Top;
+                }
+                if (xPos < 0)
+                {
+                    xPos = 0;
+                }
+                if (yPos < 0)
+                {
+                    yPos = 0;
+                }
             }
-            if (xPos < 0)
+        }
+        private void GetWindowJump()
+        {
+            checked
             {
-                xPos = 0;
-            }
-            if (yPos < 0)
-            {
-                yPos = 0;
-            }
-            Console.Write(xPos);
-            value = new IntPtr((yPos << 16) | (xPos & 0xFFFF));
+                if (Convert.ToDouble(Convert.ToString((int)GetForegroundWindow())) != 0.0)
+                {
+                    GetCursorPos(out mouseJump);
+                    hwndJump = WindowFromPoint(mouseJump);
+                    GetWindowRect(hwnd, out infoWindowJump);
+                    xJump = mouseJump.X - infoWindowJump.Left;
+                    yJump = mouseJump.Y - infoWindowJump.Top;
+                }
+                if (xJump < 0)
+                {
+                    xJump = 0;
+                }
+                if (yJump < 0)
+                {
+                    yJump = 0;
+                }
             }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            newPoint = default(Point);
-            GetCursorPos(out newPoint);
-            x = newPoint.X;
-            y = newPoint.Y;
-            Cursor.Position = new Point(xPos, yPos);
-            for (int i = 0; i < Convert.ToInt16(numericUpDown2.Value); i++)
+            IntPtr int_ = new IntPtr((yPos << 16) | (xPos & 0xFFFF));
+            for (decimal num = default(decimal); num < numericUpDownMultiply.Value; ++num)
             {
-                mouse_event(2, xPos, yPos, 0, 0);
-                mouse_event(4, xPos, yPos, 0, 0);
-                count++;
-                textBox3.Text = Convert.ToString(Convert.ToInt16(textBox3.Text) + 1);
+                SendMessage(hwnd, 513, 0, int_);
+                SendMessage(hwnd, 514, 0, int_);
+                labelCounter.Text = Convert.ToString(Convert.ToInt16(labelCounter.Text) + 1);
             }
-            Cursor.Position = new Point(x, y);
-            Thread.Sleep(Convert.ToInt32(numericUpDown1.Value));
+            Thread.Sleep(Convert.ToInt32(numericUpDownSpeed.Value));
         }
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            if (checkBox1.Checked)
+            if (checkBoxPress.Checked)
             {
                 if (GetAsyncKeyState(Keys.F1))
                 {
                     timer1.Start();
+                    if (checkBoxJump.Checked)
+                        timer3.Start();
                 }
                 else
                 {
                     timer1.Stop();
+                    labelCounter.Text = "0";
+                    if (checkBoxJump.Checked)
+                        timer3.Stop();
                 }
             }
             else
@@ -161,10 +160,15 @@ namespace AshbornClick
                 if (GetAsyncKeyState(Keys.F1))
                 {
                     timer1.Start();
+                    if(checkBoxJump.Checked)
+                        timer3.Start();
                 }
                 if (GetAsyncKeyState(Keys.F2))
                 {
                     timer1.Stop();
+                    labelCounter.Text = "0";
+                    if (checkBoxJump.Checked)
+                        timer3.Stop();
                 }
                 if (GetAsyncKeyState(Keys.F3))
                 {
@@ -173,11 +177,91 @@ namespace AshbornClick
                     xPos = cursor.X;
                     yPos = cursor.Y;
                     GetWindow();
-                    //TEMPORAL. En un futuro habra imagenes.
-                    this.BackColor = Color.LimeGreen;
+                    if (!labelCounter.Visible)
+                    {
+                        labelCounter.Visible = true;
+                        labelMultiply.Visible = true;
+                        labelSpeed.Visible = true;
+                        numericUpDownMultiply.Visible = true;
+                        numericUpDownSpeed.Visible = true;
+                        labelCounter.Visible = true;
+                        checkboxGo.Visible = true;
+                        checkBoxJump.Visible = true;
+                        checkBoxPress.Visible = true;
+                        colorGo.Visible = true;
+                        colorJump.Visible = true;
+                        colorPress.Visible = true;
+                    }
+                }
+                if (GetAsyncKeyState(Keys.F10) && checkBoxJump.Checked && this.BackColor == Color.LimeGreen )
+                {
+                    cursor = default(Point);
+                    GetCursorPos(out cursor);
+                    xJump = cursor.X;
+                    yJump = cursor.Y;
+                    GetWindowJump();
                     this.FormBorderStyle = FormBorderStyle.FixedDialog;
                 }
             }
+        }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            IntPtr int_ = new IntPtr((yJump << 16) | (xJump & 0xFFFF));
+            SendMessage(hwndJump, 513, 0, int_);
+            SendMessage(hwndJump, 514, 0, int_);
+        }
+
+        private void checkBoxPress_CheckedChanged(object sender, EventArgs e)
+        {
+            if(checkBoxPress.Checked)
+            {
+                this.colorPress.BackColor = Color.Aqua;
+            }
+            else
+            {
+                this.colorPress.BackColor = Color.White;
+            }
+        }
+
+        private void checkBoxJump_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxJump.Checked)
+            {
+                this.colorJump.BackColor = Color.Gold;
+            }
+            else
+            {
+                this.colorJump.BackColor = Color.White; 
+            }
+        }
+
+        private void checkboxGo_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkboxGo.Checked)
+            {
+                this.colorGo.BackColor = Color.BlueViolet;
+            }
+            else
+            {
+                this.colorGo.BackColor = Color.White;
+            }
+        }
+
+        private void AshbornClick_Load(object sender, EventArgs e)
+        {
+            labelCounter.Visible = false;
+            labelMultiply.Visible = false;
+            labelSpeed.Visible = false;
+            numericUpDownMultiply.Visible = false;
+            numericUpDownSpeed.Visible = false;
+            labelCounter.Visible = false;
+            checkboxGo.Visible = false;
+            checkBoxJump.Visible = false;
+            checkBoxPress.Visible = false;
+            colorGo.Visible = false;
+            colorJump.Visible = false;
+            colorPress.Visible = false;
         }
     }
 }

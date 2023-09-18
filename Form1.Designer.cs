@@ -29,17 +29,23 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AshbornClick));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            this.numericUpDownSpeed = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMultiply = new System.Windows.Forms.NumericUpDown();
+            this.labelSpeed = new System.Windows.Forms.Label();
+            this.labelMultiply = new System.Windows.Forms.Label();
+            this.checkBoxPress = new System.Windows.Forms.CheckBox();
+            this.labelCounter = new System.Windows.Forms.Label();
+            this.checkBoxJump = new System.Windows.Forms.CheckBox();
+            this.timer3 = new System.Windows.Forms.Timer(this.components);
+            this.colorPress = new System.Windows.Forms.Button();
+            this.colorJump = new System.Windows.Forms.Button();
+            this.colorGo = new System.Windows.Forms.Button();
+            this.checkboxGo = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMultiply)).BeginInit();
             this.SuspendLayout();
             // 
             // timer1
@@ -52,86 +58,144 @@
             this.timer2.Enabled = true;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
-            // textBox3
+            // numericUpDownSpeed
             // 
-            this.textBox3.Location = new System.Drawing.Point(12, 63);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 22);
-            this.textBox3.TabIndex = 2;
-            this.textBox3.Text = "0";
+            this.numericUpDownSpeed.Location = new System.Drawing.Point(19, 52);
+            this.numericUpDownSpeed.Name = "numericUpDownSpeed";
+            this.numericUpDownSpeed.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDownSpeed.TabIndex = 3;
             // 
-            // numericUpDown1
+            // numericUpDownMultiply
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(175, 63);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 22);
-            this.numericUpDown1.TabIndex = 3;
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(351, 63);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 22);
-            this.numericUpDown2.TabIndex = 4;
-            this.numericUpDown2.Value = new decimal(new int[] {
+            this.numericUpDownMultiply.Location = new System.Drawing.Point(156, 52);
+            this.numericUpDownMultiply.Name = "numericUpDownMultiply";
+            this.numericUpDownMultiply.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDownMultiply.TabIndex = 4;
+            this.numericUpDownMultiply.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
             // 
-            // label3
+            // labelSpeed
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(38, 44);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 16);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Count";
+            this.labelSpeed.AutoSize = true;
+            this.labelSpeed.Location = new System.Drawing.Point(49, 33);
+            this.labelSpeed.Name = "labelSpeed";
+            this.labelSpeed.Size = new System.Drawing.Size(48, 16);
+            this.labelSpeed.TabIndex = 8;
+            this.labelSpeed.Text = "Speed";
             // 
-            // label4
+            // labelMultiply
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(205, 44);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 16);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Speed";
+            this.labelMultiply.AutoSize = true;
+            this.labelMultiply.Location = new System.Drawing.Point(182, 33);
+            this.labelMultiply.Name = "labelMultiply";
+            this.labelMultiply.Size = new System.Drawing.Size(52, 16);
+            this.labelMultiply.TabIndex = 9;
+            this.labelMultiply.Text = "Multiply";
             // 
-            // label5
+            // checkBoxPress
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(377, 44);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(52, 16);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Multiply";
+            this.checkBoxPress.AutoSize = true;
+            this.checkBoxPress.Location = new System.Drawing.Point(312, 29);
+            this.checkBoxPress.Name = "checkBoxPress";
+            this.checkBoxPress.Size = new System.Drawing.Size(64, 20);
+            this.checkBoxPress.TabIndex = 10;
+            this.checkBoxPress.Text = "Press";
+            this.checkBoxPress.UseVisualStyleBackColor = true;
+            this.checkBoxPress.CheckedChanged += new System.EventHandler(this.checkBoxPress_CheckedChanged);
             // 
-            // checkBox1
+            // labelCounter
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(511, 65);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(64, 20);
-            this.checkBox1.TabIndex = 10;
-            this.checkBox1.Text = "Press";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.labelCounter.AutoSize = true;
+            this.labelCounter.Location = new System.Drawing.Point(202, 106);
+            this.labelCounter.Name = "labelCounter";
+            this.labelCounter.Size = new System.Drawing.Size(14, 16);
+            this.labelCounter.TabIndex = 11;
+            this.labelCounter.Text = "0";
+            // 
+            // checkBoxJump
+            // 
+            this.checkBoxJump.AutoSize = true;
+            this.checkBoxJump.Location = new System.Drawing.Point(312, 55);
+            this.checkBoxJump.Name = "checkBoxJump";
+            this.checkBoxJump.Size = new System.Drawing.Size(62, 20);
+            this.checkBoxJump.TabIndex = 12;
+            this.checkBoxJump.Text = "Jump";
+            this.checkBoxJump.UseVisualStyleBackColor = true;
+            this.checkBoxJump.CheckedChanged += new System.EventHandler(this.checkBoxJump_CheckedChanged);
+            // 
+            // timer3
+            // 
+            this.timer3.Interval = 150;
+            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
+            // 
+            // colorPress
+            // 
+            this.colorPress.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.colorPress.Enabled = false;
+            this.colorPress.Location = new System.Drawing.Point(382, 27);
+            this.colorPress.Name = "colorPress";
+            this.colorPress.Size = new System.Drawing.Size(24, 23);
+            this.colorPress.TabIndex = 13;
+            this.colorPress.UseVisualStyleBackColor = false;
+            // 
+            // colorJump
+            // 
+            this.colorJump.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.colorJump.Enabled = false;
+            this.colorJump.Location = new System.Drawing.Point(382, 53);
+            this.colorJump.Name = "colorJump";
+            this.colorJump.Size = new System.Drawing.Size(24, 23);
+            this.colorJump.TabIndex = 14;
+            this.colorJump.UseVisualStyleBackColor = false;
+            // 
+            // colorGo
+            // 
+            this.colorGo.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.colorGo.Enabled = false;
+            this.colorGo.Location = new System.Drawing.Point(382, 79);
+            this.colorGo.Name = "colorGo";
+            this.colorGo.Size = new System.Drawing.Size(24, 23);
+            this.colorGo.TabIndex = 16;
+            this.colorGo.UseVisualStyleBackColor = false;
+            // 
+            // checkboxGo
+            // 
+            this.checkboxGo.AutoSize = true;
+            this.checkboxGo.Location = new System.Drawing.Point(312, 81);
+            this.checkboxGo.Name = "checkboxGo";
+            this.checkboxGo.Size = new System.Drawing.Size(47, 20);
+            this.checkboxGo.TabIndex = 15;
+            this.checkboxGo.Text = "Go";
+            this.checkboxGo.UseVisualStyleBackColor = true;
+            this.checkboxGo.CheckedChanged += new System.EventHandler(this.checkboxGo_CheckedChanged);
             // 
             // AshbornClick
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(595, 131);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.textBox3);
+            this.BackgroundImage = global::AshbornClick.Properties.Resources.eyes;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(421, 131);
+            this.Controls.Add(this.colorGo);
+            this.Controls.Add(this.checkboxGo);
+            this.Controls.Add(this.colorJump);
+            this.Controls.Add(this.colorPress);
+            this.Controls.Add(this.checkBoxJump);
+            this.Controls.Add(this.labelCounter);
+            this.Controls.Add(this.checkBoxPress);
+            this.Controls.Add(this.labelMultiply);
+            this.Controls.Add(this.labelSpeed);
+            this.Controls.Add(this.numericUpDownMultiply);
+            this.Controls.Add(this.numericUpDownSpeed);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AshbornClick";
-            this.Text = "AshbornClick";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            this.Text = " AshbornClick";
+            this.Load += new System.EventHandler(this.AshbornClick_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMultiply)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -141,13 +205,18 @@
 
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Timer timer2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.NumericUpDown numericUpDownSpeed;
+        private System.Windows.Forms.NumericUpDown numericUpDownMultiply;
+        private System.Windows.Forms.Label labelSpeed;
+        private System.Windows.Forms.Label labelMultiply;
+        private System.Windows.Forms.CheckBox checkBoxPress;
+        private System.Windows.Forms.Label labelCounter;
+        private System.Windows.Forms.CheckBox checkBoxJump;
+        private System.Windows.Forms.Timer timer3;
+        private System.Windows.Forms.Button colorPress;
+        private System.Windows.Forms.Button colorJump;
+        private System.Windows.Forms.Button colorGo;
+        private System.Windows.Forms.CheckBox checkboxGo;
     }
 }
 

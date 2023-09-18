@@ -2,9 +2,9 @@ C:\Users\destr\source\repos\AshbornClick\bin\Debug\AshbornClick.exe.config
 C:\Users\destr\source\repos\AshbornClick\bin\Debug\AshbornClick.exe
 C:\Users\destr\source\repos\AshbornClick\bin\Debug\AshbornClick.pdb
 C:\Users\destr\source\repos\AshbornClick\obj\Debug\AshbornClick.csproj.AssemblyReference.cache
-C:\Users\destr\source\repos\AshbornClick\obj\Debug\AshbornClick.Form1.resources
 C:\Users\destr\source\repos\AshbornClick\obj\Debug\AshbornClick.Properties.Resources.resources
 C:\Users\destr\source\repos\AshbornClick\obj\Debug\AshbornClick.csproj.GenerateResource.cache
 C:\Users\destr\source\repos\AshbornClick\obj\Debug\AshbornClick.csproj.CoreCompileInputs.cache
 C:\Users\destr\source\repos\AshbornClick\obj\Debug\AshbornClick.exe
 C:\Users\destr\source\repos\AshbornClick\obj\Debug\AshbornClick.pdb
+C:\Users\destr\source\repos\AshbornClick\obj\Debug\AshbornClick.AshbornClick.resources
