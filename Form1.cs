@@ -38,6 +38,12 @@ namespace AshbornClick
 
     public static int yJump;
 
+    public static int xGo;
+
+    public static int yGo;
+
+    public static int number;
+
     public static Point newPoint;
 
     public static Point cursor;
@@ -48,11 +54,9 @@ namespace AshbornClick
 
     private RECT infoWindow;
 
-    private IntPtr hwndJump;
+    Random rnd = new Random();
 
-    private POINT_API mouseJump;
-
-    private RECT infoWindowJump;
+    private int lastNum = -1;
 
     [DllImport("user32.dll", CharSet = CharSet.Auto)]
     public static extern bool GetCursorPos(out Point lpPoint);
@@ -80,51 +84,55 @@ namespace AshbornClick
             InitializeComponent();
         }
 
-        private void GetWindow()
+        private int[] GetWindow(int x, int y)
         {
-            checked
-            {
                 if (Convert.ToDouble(Convert.ToString((int)GetForegroundWindow())) != 0.0)
                 {
                     GetCursorPos(out mouse);
                     hwnd = WindowFromPoint(mouse);
                     GetWindowRect(hwnd, out infoWindow);
-                    xPos = mouse.X - infoWindow.Left;
-                    yPos = mouse.Y - infoWindow.Top;
+                    x = mouse.X - infoWindow.Left;
+                    y = mouse.Y - infoWindow.Top;
                 }
-                if (xPos < 0)
+                if (x < 0)
                 {
-                    xPos = 0;
+                    x = 0;
                 }
-                if (yPos < 0)
+                if (y < 0)
                 {
-                    yPos = 0;
+                    y = 0;
                 }
-            }
-        }
-        private void GetWindowJump()
-        {
-            checked
-            {
-                if (Convert.ToDouble(Convert.ToString((int)GetForegroundWindow())) != 0.0)
-                {
-                    GetCursorPos(out mouseJump);
-                    hwndJump = WindowFromPoint(mouseJump);
-                    GetWindowRect(hwnd, out infoWindowJump);
-                    xJump = mouseJump.X - infoWindowJump.Left;
-                    yJump = mouseJump.Y - infoWindowJump.Top;
-                }
-                if (xJump < 0)
-                {
-                    xJump = 0;
-                }
-                if (yJump < 0)
-                {
-                    yJump = 0;
-                }
-            }
-        }
+                int[] result = new int[2];
+                result[0] = x;
+                result[1] = y;
 
+            return result;
+        }
+        private int[] GetWindowGo(int x, int y)
+        {
+            if (Convert.ToDouble(Convert.ToString((int)GetForegroundWindow())) != 0.0)
+            {
+                mouse.X = x;
+                mouse.Y = y;
+                hwnd = WindowFromPoint(mouse);
+                GetWindowRect(hwnd, out infoWindow);
+                x = mouse.X - infoWindow.Left;
+                y = mouse.Y - infoWindow.Top;
+            }
+            if (x < 0)
+            {
+                x = 0;
+            }
+            if (y < 0)
+            {
+                y = 0;
+            }
+            int[] result = new int[2];
+            result[0] = x;
+            result[1] = y;
+
+            return result;
+        }
         private void timer1_Tick(object sender, EventArgs e)
         {
             IntPtr int_ = new IntPtr((yPos << 16) | (xPos & 0xFFFF));
@@ -151,8 +159,7 @@ namespace AshbornClick
                 {
                     timer1.Stop();
                     labelCounter.Text = "0";
-                    if (checkBoxJump.Checked)
-                        timer3.Stop();
+                    timer3.Stop();
                 }
             }
             else
@@ -162,13 +169,15 @@ namespace AshbornClick
                     timer1.Start();
                     if(checkBoxJump.Checked)
                         timer3.Start();
+                    if(checkboxGo.Checked)
+                        timer4.Start();
                 }
                 if (GetAsyncKeyState(Keys.F2))
                 {
                     timer1.Stop();
                     labelCounter.Text = "0";
-                    if (checkBoxJump.Checked)
-                        timer3.Stop();
+                    timer3.Stop();
+                    timer4.Stop();
                 }
                 if (GetAsyncKeyState(Keys.F3))
                 {
@@ -176,7 +185,10 @@ namespace AshbornClick
                     GetCursorPos(out cursor);
                     xPos = cursor.X;
                     yPos = cursor.Y;
-                    GetWindow();
+                    int[] windowCoords = GetWindow(xPos, yPos);
+                    xPos = windowCoords[0];
+                    yPos = windowCoords[1];
+
                     if (!labelCounter.Visible)
                     {
                         labelCounter.Visible = true;
@@ -193,13 +205,15 @@ namespace AshbornClick
                         colorPress.Visible = true;
                     }
                 }
-                if (GetAsyncKeyState(Keys.F10) && checkBoxJump.Checked && this.BackColor == Color.LimeGreen )
+                if (GetAsyncKeyState(Keys.F10) && checkBoxJump.Checked )
                 {
                     cursor = default(Point);
                     GetCursorPos(out cursor);
                     xJump = cursor.X;
                     yJump = cursor.Y;
-                    GetWindowJump();
+                    int[] windowCoords = GetWindow(xJump, yJump);
+                    xJump = windowCoords[0];
+                    yJump = windowCoords[1];
                     this.FormBorderStyle = FormBorderStyle.FixedDialog;
                 }
             }
@@ -208,8 +222,8 @@ namespace AshbornClick
         private void timer3_Tick(object sender, EventArgs e)
         {
             IntPtr int_ = new IntPtr((yJump << 16) | (xJump & 0xFFFF));
-            SendMessage(hwndJump, 513, 0, int_);
-            SendMessage(hwndJump, 514, 0, int_);
+            SendMessage(hwnd, 513, 0, int_);
+            SendMessage(hwnd, 514, 0, int_);
         }
 
         private void checkBoxPress_CheckedChanged(object sender, EventArgs e)
@@ -217,10 +231,13 @@ namespace AshbornClick
             if(checkBoxPress.Checked)
             {
                 this.colorPress.BackColor = Color.Aqua;
+                checkboxGo.Checked = false;
+                checkboxGo.Enabled = false;
             }
             else
             {
                 this.colorPress.BackColor = Color.White;
+                this.checkboxGo.Enabled = true;
             }
         }
 
@@ -262,6 +279,77 @@ namespace AshbornClick
             colorGo.Visible = false;
             colorJump.Visible = false;
             colorPress.Visible = false;
+        }
+
+        private void timer4_Tick(object sender, EventArgs e)
+        {
+            number = 1;
+
+            if(number == lastNum)
+            {
+                if(number == 0)
+                {
+                    number++;
+                }
+                else if(number == 7)
+                {
+                    number--;
+                }
+                else
+                {
+                    number++;
+                }
+            }
+
+            if (number == 0)
+            {
+                xGo = 681;
+                yGo = 281;
+            }
+            else if(number == 1)
+            {
+                xGo = 521;
+                yGo = 281;
+            }
+            else if(number == 2)
+            {
+                xGo = 360;
+                yGo = 281;
+            }
+            else if( number == 3)
+            {
+                xGo = 280;
+                yGo = 327;
+            }
+            else if(number == 4)
+            {
+                xGo = 358;
+                yGo = 365;
+            }
+            else if(number == 5)
+            {
+                xGo = 518;
+                yGo = 365;
+            }
+            else if(number == 6)
+            {
+                xGo = 681;
+                yGo = 365;
+            }
+            else if(number == 7)
+            {
+                xGo = 758;
+                yGo = 328;
+            }
+            int[] windowCoords = GetWindow(xGo, yGo);
+            xGo = windowCoords[0];
+            yGo = windowCoords[1];
+
+            IntPtr int_ = new IntPtr((xGo << 16) | (yGo & 0xFFFF));
+            SendMessage(hwnd, 513, 0, int_);
+            SendMessage(hwnd, 514, 0, int_);
+
+            lastNum = number;
         }
     }
 }

@@ -44,6 +44,7 @@
             this.colorJump = new System.Windows.Forms.Button();
             this.colorGo = new System.Windows.Forms.Button();
             this.checkboxGo = new System.Windows.Forms.CheckBox();
+            this.timer4 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMultiply)).BeginInit();
             this.SuspendLayout();
@@ -172,6 +173,11 @@
             this.checkboxGo.UseVisualStyleBackColor = true;
             this.checkboxGo.CheckedChanged += new System.EventHandler(this.checkboxGo_CheckedChanged);
             // 
+            // timer4
+            // 
+            this.timer4.Interval = 1000;
+            this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
+            // 
             // AshbornClick
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -190,7 +196,9 @@
             this.Controls.Add(this.labelSpeed);
             this.Controls.Add(this.numericUpDownMultiply);
             this.Controls.Add(this.numericUpDownSpeed);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(439, 178);
             this.Name = "AshbornClick";
             this.Text = " AshbornClick";
             this.Load += new System.EventHandler(this.AshbornClick_Load);
@@ -217,6 +225,7 @@
         private System.Windows.Forms.Button colorJump;
         private System.Windows.Forms.Button colorGo;
         private System.Windows.Forms.CheckBox checkboxGo;
+        private System.Windows.Forms.Timer timer4;
     }
 }
 
